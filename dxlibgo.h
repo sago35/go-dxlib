@@ -21,3 +21,23 @@ extern	int			goGetRand( int RandMax ) ;												// 乱数を取得する( Ran
 extern	int			goDrawBox(          int   x1, int   y1, int   x2, int   y2,                                         unsigned int Color, int FillFlag ) ;										// 四角形を描画する
 extern	int				goClearDrawScreen(					        const RECT *ClearRect ) ;												// 画面をクリアする
 extern	int				goScreenFlip(									void ) ;																		// 裏画面と表画面の内容を交換する
+
+extern	int			goSetMouseDispFlag(		int DispFlag ) ;												// マウスポインタの表示状態を設定する( DispFlag:マウスポインタを表示するかどうか( TRUE:表示する  FALSE:表示しない )
+extern	int			goCheckHitKeyAll(							int CheckType ) ;									// どれか一つでもキーが押されているかどうかを取得( 押されていたら戻り値が 0 以外になる )
+extern	int			goWaitTimer( int WaitTime ) ;												// 指定の時間だけ処理をとめる
+extern	int			goGetMousePoint(			int *XBuf, int *YBuf ) ;										// マウスポインタの位置を取得する
+extern	int			goDrawString(                             int x, int y,                                              const TCHAR *String,                      unsigned int Color, unsigned int EdgeColor ) ;							// デフォルトフォントハンドルを使用して文字列を描画する
+extern	int			goProcessMessage( void ) ;												// ウインドウズのメッセージループに代わる処理を行う
+extern	int			goSetUseZBuffer3D(					int Flag ) ;													// Ｚバッファを使用するかどうかを設定する( ３Ｄ描画のみに影響 )( TRUE:Ｚバッファを使用する  FALSE:Ｚバッファを使用しない( デフォルト ) )
+extern	int			goSetWriteZBuffer3D(					int Flag ) ;													// Ｚバッファに書き込みを行うかどうかを設定する( ３Ｄ描画のみに影響 )( TRUE:書き込みを行う  FALSE:書き込みを行わない( デフォルト ) )
+
+// ベクトルデータ型
+typedef struct tagVECTOR
+{
+	float					x, y, z ;
+} VECTOR, *LPVECTOR, FLOAT3, *LPFLOAT3 ;
+
+extern VECTOR goVGet( float x, float y, float z ); // ベクトル値の生成
+extern	int			goDrawCone3D(      VECTOR   TopPos, VECTOR   BottomPos, float  r, int DivNum, unsigned int DifColor, unsigned int SpcColor, int FillFlag ) ;		// ３Ｄの円錐を描画する
+
+extern int goSample();
