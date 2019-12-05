@@ -39,5 +39,21 @@ typedef struct tagVECTOR
 
 extern VECTOR goVGet( float x, float y, float z ); // ベクトル値の生成
 extern	int			goDrawCone3D(      VECTOR   TopPos, VECTOR   BottomPos, float  r, int DivNum, unsigned int DifColor, unsigned int SpcColor, int FillFlag ) ;		// ３Ｄの円錐を描画する
+extern	int			goMV1LoadModel(						const TCHAR *FileName ) ;											// モデルの読み込み( -1:エラー  0以上:モデルハンドル )
+extern	int			goChangeLightTypeDir(			VECTOR Direction ) ;															// デフォルトライトのタイプをディレクショナルライトにする
+extern	int			goMV1SetPosition(						int MHandle, VECTOR   Position ) ;									// モデルの座標をセット
+extern	int			goMV1DrawModel(						int MHandle ) ;														// モデルを描画する
+extern	int			goMV1DeleteModel(						int MHandle ) ;														// モデルを削除する
+
+extern	int			goChangeWindowMode(						int Flag ) ;																		// ウインドウモードを変更する
+
+
+// float 型のカラー値
+typedef struct tagCOLOR_F
+{
+    float					r, g, b, a ;
+} COLOR_F, *LPCOLOR_F ;
+extern	COLOR_F			goGetColorF(               float Red, float Green, float Blue, float Alpha ) ;													// 浮動小数点型のカラー値を作成する
+extern	int			goMV1SetMaterialAmbColor( 			int MHandle, int MaterialIndex, COLOR_F Color ) ;						// 指定のマテリアルのアンビエントカラーを設定する
 
 extern int goSample();

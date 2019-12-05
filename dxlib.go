@@ -89,6 +89,7 @@ func SetMouseDispFlag(DispFlag int) int {
 }
 
 // どれか一つでもキーが押されているかどうかを取得( 押されていたら戻り値が 0 以外になる )
+// 全てのインプットを調べる場合は DX_CHECKINPUT_ALL を入力する
 func CheckHitKeyAll(CheckType int) int {
 	return int(C.goCheckHitKeyAll(C.int(CheckType)))
 }
@@ -171,6 +172,75 @@ func DrawCone3D(TopPos, BottomPos VECTOR, r float32, DivNum int, DifColor, SpcCo
 		z: C.float(BottomPos.z),
 	}
 	return int(C.goDrawCone3D(tp, bp, C.float(r), C.int(DivNum), C.uint(DifColor), C.uint(SpcColor), C.int(FillFlag)))
+}
+
+// モデルの読み込み( -1:エラー  0以上:モデルハンドル )
+func MV1LoadModel(FileName string) int {
+	return int(C.goMV1LoadModel(C.CString(FileName)))
+}
+
+// デフォルトライトのタイプをディレクショナルライトにする
+func ChangeLightTypeDir(Direction VECTOR) int {
+	v := C.struct_tagVECTOR{
+		x: C.float(Direction.x),
+		y: C.float(Direction.y),
+		z: C.float(Direction.z),
+	}
+	return int(C.goChangeLightTypeDir(v))
+}
+
+// モデルの座標をセット
+func MV1SetPosition(MHandle int, Position VECTOR) int {
+	v := C.struct_tagVECTOR{
+		x: C.float(Position.x),
+		y: C.float(Position.y),
+		z: C.float(Position.z),
+	}
+	return int(C.goMV1SetPosition(C.int(MHandle), v))
+}
+
+// モデルを描画する
+func MV1DrawModel(MHandle int) int {
+	return int(C.goMV1DrawModel(C.int(MHandle)))
+}
+
+// モデルを削除する
+func MV1DeleteModel(MHandle int) int {
+	return int(C.goMV1DeleteModel(C.int(MHandle)))
+}
+
+// ウインドウモードを変更する
+func ChangeWindowMode(Flag int) int {
+	return int(C.goChangeWindowMode(C.int(Flag)))
+}
+
+// COLOR_F ...
+type COLOR_F struct {
+	r float32
+	g float32
+	b float32
+	a float32
+}
+
+// 浮動小数点型のカラー値を作成する
+func GetColorF(Red, Green, Blue, Alpha float32) COLOR_F {
+	return COLOR_F{
+		r: float32(Red),
+		g: float32(Green),
+		b: float32(Blue),
+		a: float32(Alpha),
+	}
+}
+
+// 指定のマテリアルのアンビエントカラーを設定する
+func MV1SetMaterialAmbColor(MHandle, MaterialIndex int, Color COLOR_F) int {
+	c := C.struct_tagCOLOR_F{
+		r: C.float(Color.r),
+		g: C.float(Color.g),
+		b: C.float(Color.b),
+		a: C.float(Color.a),
+	}
+	return int(C.goMV1SetMaterialAmbColor(C.int(MHandle), C.int(MaterialIndex), c))
 }
 
 func Sample() int {

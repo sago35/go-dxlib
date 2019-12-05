@@ -88,7 +88,41 @@ extern "C" {
         return DrawCone3D(TopPos, BottomPos, r, DivNum, DifColor, SpcColor, FillFlag);
     }
 
+    int goMV1LoadModel( const TCHAR *FileName ) {
+        return MV1LoadModel(FileName);
+    }
+
+    int goChangeLightTypeDir( VECTOR Direction ) {
+        return ChangeLightTypeDir(Direction);
+    }
+
+    int goMV1SetPosition( int MHandle, VECTOR Position ) {
+        return MV1SetPosition(MHandle, Position);
+    }
+
+    int goMV1DrawModel( int MHandle ) {
+        return MV1DrawModel(MHandle);
+    }
+    int goMV1DeleteModel( int MHandle ) {
+        return MV1DeleteModel(MHandle);
+    }
+
+    int goChangeWindowMode( int Flag ) {
+        return ChangeWindowMode(Flag);
+    }
+
+    COLOR_F goGetColorF( float Red, float Green, float Blue, float Alpha ) {
+        return GetColorF(Red, Green, Blue, Alpha);
+    }
+
+    int goMV1SetMaterialAmbColor( int MHandle, int MaterialIndex, COLOR_F Color ) {
+        return MV1SetMaterialAmbColor(MHandle, MaterialIndex, Color);
+    }
+
     int goSample( void ) {
+
+        int ModelHandle ;
+
         // ＤＸライブラリの初期化
         if( DxLib_Init() < 0 )
         {
@@ -96,16 +130,23 @@ extern "C" {
             return -1 ;
         }
 
-        // Ｚバッファを有効にする
-        SetUseZBuffer3D( TRUE ) ;
+        // ３Ｄモデルの読み込み
+        //ModelHandle = MV1LoadModel( "DxChara.x" ) ;
+        ModelHandle = MV1LoadModel( "go_gopher_high.x" ) ;
 
-        // Ｚバッファへの書き込みを有効にする
-        SetWriteZBuffer3D( TRUE ) ;
+        // 画面に映る位置に３Ｄモデルを移動
+        MV1SetPosition( ModelHandle, VGet( 320.0f, -300.0f, 600.0f ) ) ;
 
-        // ３Ｄ空間上に円錐を描画する
-        DrawCone3D( VGet( 320.0f, 400.0f, 0.0f ), VGet( 320.0f, 100.0f, 0.0f ), 80.0f, 16, GetColor( 0,0,255 ), GetColor( 255,255,255 ), TRUE ) ;
+        // ３Ｄモデルに含まれる０番目のマテリアルのアンビエントカラーを紫色にします
+        MV1SetMaterialAmbColor( ModelHandle, 0, GetColorF( 0.4f, 0.4f, 1.0f, 1.0f ) ) ;
 
-        // キー入力待ちをする
+        // ３Ｄモデルの描画
+        MV1DrawModel( ModelHandle ) ;
+
+        // モデルハンドルの削除
+        MV1DeleteModel( ModelHandle ) ;
+
+        // キーの入力待ち
         WaitKey() ;
 
         // ＤＸライブラリの後始末
